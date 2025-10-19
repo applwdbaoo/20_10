@@ -675,6 +675,8 @@
 
 <body>
 
+    <audio id="bg-music" src="music.mp3" loop></audio>
+
     <svg style="display: none;" id="theSvg" viewBox="-120 -30 240 180" enable-background="new 0 0 174 148"
         xml:space="preserve">
         <defs>
@@ -1248,7 +1250,26 @@
             autoplay: true,
         });
 
+         document.addEventListener('click', () => {
+    const audio = document.getElementById('bg-music');
+    audio.volume = 0; // start silent
+    const targetVolume = 0.6; // how loud it gets (0.0–1.0)
+    const fadeDuration = 4000; // 4 seconds fade in
+    const fadeStep = targetVolume / (fadeDuration / 100);
+
+    audio.play().catch(err => console.log('Autoplay blocked:', err));
+
+    const fadeIn = setInterval(() => {
+      if (audio.volume < targetVolume) {
+        audio.volume = Math.min(audio.volume + fadeStep, targetVolume);
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 100);
+  }, { once: true });
+
     </script>
+    
 </body>
 
 </html>
